@@ -91,7 +91,7 @@ export default function ReferralsPage() {
           Show inactive
         </label>
       </FilterBar>
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "var(--page-bg)" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "clamp(10px, 2vw, 16px) clamp(12px, 3vw, 24px)", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "12px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         {loading ? <AdminTableSkeleton rows={5} cols={5} /> : codes.length === 0 ? (
           <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px" }}>

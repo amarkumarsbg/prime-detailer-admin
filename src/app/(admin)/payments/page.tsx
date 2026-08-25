@@ -58,39 +58,77 @@ export default function PaymentsPage() {
           { value: "FAILED", label: "Failed" },
         ]} />
       </FilterBar>
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "var(--page-bg)" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "clamp(10px, 2vw, 16px) clamp(12px, 3vw, 24px)", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "12px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         {loading ? <AdminTableSkeleton rows={8} cols={8} /> : displayed.length === 0 ? (
           <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px" }}><EmptyState icon={FileText} title="No payments found" /></div>
         ) : (
           <>
-            <AdminTable>
-              <THead><tr><Th>Organization</Th><Th>Plan</Th><Th>Bill</Th><Th>Amount</Th><Th>Method</Th><Th>Status</Th><Th>Txn Ref</Th><Th>Created</Th><Th>Verified</Th><Th></Th></tr></THead>
-              <TBody>
-                {displayed.map((r) => (
-                  <Tr key={r.id}>
-                    <Td><Link href={`/organizations/${r.organizationId}`} style={{ color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>{r.organizationName}</Link></Td>
-                    <Td muted>{r.planName}</Td>
-                    <Td mono muted>{r.billNumber ?? "—"}</Td>
-                    <Td style={{ fontWeight: 500 }}>{r.amount != null ? formatCurrency(r.amount, r.currency) : "—"}</Td>
-                    <Td muted>{r.method ?? "—"}</Td>
-                    <Td><PaymentStatusBadge status={r.status} /></Td>
-                    <Td mono muted nowrap>{r.txnReference ?? "—"}</Td>
-                    <Td muted nowrap>{formatDateTime(r.createdAt)}</Td>
-                    <Td muted nowrap>{r.verifiedAt ? formatDateTime(r.verifiedAt) : "—"}</Td>
-                    <Td>
-                      {(r.status === "PENDING" || r.status === "PROCESSING") && (
-                        <div style={{ display: "flex", gap: "4px" }}>
-                          <button disabled={!!verifying} onClick={() => handleVerify(r, "PAID")} style={{ display: "flex", alignItems: "center", gap: "3px", padding: "3px 8px", border: "1px solid #bbf7d0", borderRadius: "5px", background: "#f0fdf4", color: "#15803d", fontSize: "11px", fontWeight: 500, cursor: verifying ? "not-allowed" : "pointer", opacity: verifying ? 0.6 : 1 }}>{verifying === r.id ? <Loader2 style={{ width: "11px", height: "11px", animation: "spin 1s linear infinite" }} /> : <CheckCircle2 style={{ width: "11px", height: "11px" }} />} Paid</button>
-                          <button disabled={!!verifying} onClick={() => handleVerify(r, "FAILED")} style={{ display: "flex", alignItems: "center", gap: "3px", padding: "3px 8px", border: "1px solid #fecaca", borderRadius: "5px", background: "#fef2f2", color: "#dc2626", fontSize: "11px", fontWeight: 500, cursor: verifying ? "not-allowed" : "pointer", opacity: verifying ? 0.6 : 1 }}>{verifying === r.id ? <Loader2 style={{ width: "11px", height: "11px", animation: "spin 1s linear infinite" }} /> : <XCircle style={{ width: "11px", height: "11px" }} />} Failed</button>
-                        </div>
-                      )}
-                    </Td>
-                  </Tr>
-                ))}
+            {/* Desktop table */}
+            <div className="hidden md:block">
+              <AdminTable>
+                <THead><tr><Th>Organization</Th><Th>Plan</Th><Th>Bill</Th><Th>Amount</Th><Th>Method</Th><Th>Status</Th><Th>Txn Ref</Th><Th>Created</Th><Th>Verified</Th><Th></Th></tr></THead>
+                <TBody>
+                  {displayed.map((r) => (
+                    <Tr key={r.id}>
+                      <Td><Link href={`/organizations/${r.organizationId}`} style={{ color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>{r.organizationName}</Link></Td>
+                      <Td muted>{r.planName}</Td>
+                      <Td mono muted>{r.billNumber ?? "—"}</Td>
+                      <Td style={{ fontWeight: 500 }}>{r.amount != null ? formatCurrency(r.amount, r.currency) : "—"}</Td>
+                      <Td muted>{r.method ?? "—"}</Td>
+                      <Td><PaymentStatusBadge status={r.status} /></Td>
+                      <Td mono muted nowrap>{r.txnReference ?? "—"}</Td>
+                      <Td muted nowrap>{formatDateTime(r.createdAt)}</Td>
+                      <Td muted nowrap>{r.verifiedAt ? formatDateTime(r.verifiedAt) : "—"}</Td>
+                      <Td>
+                        {(r.status === "PENDING" || r.status === "PROCESSING") && (
+                          <div style={{ display: "flex", gap: "4px" }}>
+                            <button disabled={!!verifying} onClick={() => handleVerify(r, "PAID")} style={{ display: "flex", alignItems: "center", gap: "3px", padding: "3px 8px", border: "1px solid #bbf7d0", borderRadius: "5px", background: "#f0fdf4", color: "#15803d", fontSize: "11px", fontWeight: 500, cursor: verifying ? "not-allowed" : "pointer", opacity: verifying ? 0.6 : 1 }}>{verifying === r.id ? <Loader2 style={{ width: "11px", height: "11px", animation: "spin 1s linear infinite" }} /> : <CheckCircle2 style={{ width: "11px", height: "11px" }} />} Paid</button>
+                            <button disabled={!!verifying} onClick={() => handleVerify(r, "FAILED")} style={{ display: "flex", alignItems: "center", gap: "3px", padding: "3px 8px", border: "1px solid #fecaca", borderRadius: "5px", background: "#fef2f2", color: "#dc2626", fontSize: "11px", fontWeight: 500, cursor: verifying ? "not-allowed" : "pointer", opacity: verifying ? 0.6 : 1 }}>{verifying === r.id ? <Loader2 style={{ width: "11px", height: "11px", animation: "spin 1s linear infinite" }} /> : <XCircle style={{ width: "11px", height: "11px" }} />} Failed</button>
+                          </div>
+                        )}
+                      </Td>
+                    </Tr>
+                  ))}
               </TBody>
             </AdminTable>
             <TableFooter showing={displayed.length} total={rows.length} label="payments" />
+            </div>
+
+            {/* Mobile cards */}
+            <div className="flex flex-col gap-3 md:hidden">
+              {displayed.map((r) => (
+                <div key={r.id} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                    <div>
+                      <Link href={`/organizations/${r.organizationId}`} style={{ fontSize: 14, fontWeight: 600, color: "#2563eb", textDecoration: "none" }}>{r.organizationName}</Link>
+                      <div style={{ fontSize: 11, color: "var(--muted-foreground)" }}>{r.planName}{r.billNumber ? ` · ${r.billNumber}` : ""}</div>
+                    </div>
+                    <PaymentStatusBadge status={r.status} />
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
+                    {[
+                      { label: "Amount", value: r.amount != null ? formatCurrency(r.amount, r.currency) : "—" },
+                      { label: "Method", value: r.method ?? "—" },
+                      { label: "Created", value: formatDateTime(r.createdAt) },
+                      { label: "Txn Ref", value: r.txnReference ?? "—" },
+                    ].map(({ label, value }) => (
+                      <div key={label}>
+                        <div style={{ fontSize: 10, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{label}</div>
+                        <div style={{ fontSize: 13, color: "var(--foreground)" }}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {(r.status === "PENDING" || r.status === "PROCESSING") && (
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <button disabled={!!verifying} onClick={() => handleVerify(r, "PAID")} style={{ flex: 1, padding: "8px", border: "1px solid #bbf7d0", borderRadius: 8, background: "#f0fdf4", color: "#15803d", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>✓ Mark Paid</button>
+                      <button disabled={!!verifying} onClick={() => handleVerify(r, "FAILED")} style={{ flex: 1, padding: "8px", border: "1px solid #fecaca", borderRadius: 8, background: "#fef2f2", color: "#dc2626", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>✗ Mark Failed</button>
+                    </div>
+                  )}
+                </div>
+              ))}
+              <div style={{ fontSize: 12, color: "var(--muted-foreground)", textAlign: "center", paddingTop: 4 }}>Showing {displayed.length} of {rows.length} payments</div>
+            </div>
           </>
         )}
       </div>

@@ -34,7 +34,7 @@ export default function PlansPage() {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <Topbar title="Plans & Pricing" description="Plan catalog and pricing configuration" />
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px", background: "var(--page-bg)" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "clamp(12px, 2.5vw, 20px) clamp(12px, 3vw, 24px)", background: "var(--page-bg)" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", padding: "10px 14px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "8px", marginBottom: "20px", fontSize: "13px", color: "#1d4ed8" }}>
           <Info style={{ width: "14px", height: "14px", marginTop: "2px", flexShrink: 0 }} />
           <span>Pricing is configured via backend environment variables. Update the backend <code style={{ background: "#dbeafe", padding: "1px 4px", borderRadius: "3px" }}>.env</code> and restart the API to change prices.</span>

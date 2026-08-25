@@ -29,7 +29,7 @@ export function FilterBar({
         flexWrap: "wrap",
         alignItems: "center",
         gap: "8px",
-        padding: "12px 24px",
+        padding: "10px clamp(12px, 3vw, 24px)",
         borderBottom: "1px solid var(--border)",
         background: "var(--card)",
       }}

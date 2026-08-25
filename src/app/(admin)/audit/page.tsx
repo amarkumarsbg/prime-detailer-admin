@@ -33,7 +33,7 @@ export default function AuditPage() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <Topbar title="Audit Logs" description={`${rows.length} platform events`} />
       <FilterBar searchValue={actionFilter} onSearch={setActionFilter} searchPlaceholder="Filter by action…" onRefresh={() => load(true)} refreshing={refreshing} />
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "var(--page-bg)" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "clamp(10px, 2vw, 16px) clamp(12px, 3vw, 24px)", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "12px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         {loading ? <AdminTableSkeleton rows={8} cols={5} /> : rows.length === 0 ? (
           <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px" }}><EmptyState icon={ClipboardList} title="No audit events found" /></div>

@@ -402,7 +402,7 @@ export default function OrgDetailPage() {
   if (loading) return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <Topbar />
-      <div style={{ flex: 1, overflowY: "auto", background: "var(--page-bg)", padding: "24px" }}>
+      <div style={{ flex: 1, overflowY: "auto", background: "var(--page-bg)", padding: "clamp(12px, 3vw, 24px)" }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
           <OrgCard>
             <OrgCardBody>
@@ -447,7 +447,7 @@ export default function OrgDetailPage() {
   if (error || !org) return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <Topbar />
-      <div style={{ padding: "24px" }}>
+      <div style={{ padding: "clamp(12px, 3vw, 24px)" }}>
         <ErrorBanner message={error ?? "Organization not found."} onRetry={() => load()} />
       </div>
     </div>
@@ -477,8 +477,19 @@ export default function OrgDetailPage() {
         }
       />
 
-      <div style={{ flex: 1, overflowY: "auto", background: "var(--page-bg)", padding: "24px" }}>
+      <div style={{ flex: 1, overflowY: "auto", background: "var(--page-bg)", padding: "clamp(12px, 3vw, 24px)" }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
+
+          {/* Mobile-only back/refresh row */}
+          <div className="flex sm:hidden gap-2">
+            <Button variant="outline" size="sm" onClick={() => router.back()} style={{ minWidth: 88, paddingLeft: 14, paddingRight: 14 }}>
+              <ArrowLeft className="h-4 w-4" /> Back
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => load(true)} disabled={refreshing} style={{ minWidth: 100, paddingLeft: 14, paddingRight: 14 }}>
+              <RefreshCw className={`h-4 w-4${refreshing ? " animate-spin" : ""}`} />
+              {refreshing ? "Refreshing…" : "Refresh"}
+            </Button>
+          </div>
 
           {/* Row 1 – Subscription overview */}
           <OrgCard>
@@ -636,7 +647,7 @@ export default function OrgDetailPage() {
 
       {/* Mark Paid Modal */}
       {markPaidOpen && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: 16 }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: "12px" }}>
           <div style={{ background: "var(--card)", borderRadius: 16, boxShadow: "0 20px 60px rgba(0,0,0,0.18)", width: "100%", maxWidth: 440, overflow: "hidden" }}>
             <div style={{ padding: "24px 24px 0" }}>
               <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: "var(--foreground)" }}>Mark Subscription Paid</h2>
@@ -646,7 +657,7 @@ export default function OrgDetailPage() {
                 A renewal record and bill will be generated.
               </p>
             </div>
-            <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 14 }}>
+            <div style={{ padding: "clamp(12px, 2.5vw, 20px) clamp(12px, 3vw, 24px)", display: "flex", flexDirection: "column", gap: 14 }}>
               <FormField label="Amount Received (optional)">
                 <Input type="number" placeholder=" e.g. 9999" value={markPaidAmount} onChange={(e) => setMarkPaidAmount(e.target.value)} disabled={markPaidLoading} />
               </FormField>

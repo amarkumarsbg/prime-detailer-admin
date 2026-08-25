@@ -48,7 +48,7 @@ export default function DashboardPage() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <RefreshingBar show={refreshing} />
       <Topbar title="Dashboard" description="Platform overview" />
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px", background: "var(--page-bg)" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "clamp(12px, 2.5vw, 20px) clamp(12px, 3vw, 24px)", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "16px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "12px", marginBottom: "20px" }}>
           <StatCard label="Total Orgs" value={loading ? "—" : stats.total} icon={Building2} iconBg="#eff6ff" iconColor="#2563eb" loading={loading} />
@@ -65,21 +65,46 @@ export default function DashboardPage() {
           {loading ? <AdminTableSkeleton rows={5} cols={6} /> : orgs.length === 0 ? (
             <EmptyState icon={Building2} title="No organizations yet" />
           ) : (
-            <AdminTable>
-              <THead><tr><Th>Organization</Th><Th>Plan</Th><Th>Status</Th><Th>Expiry</Th><Th>Payment</Th><Th>Usage</Th></tr></THead>
-              <TBody>
+            <>
+              {/* Desktop table */}
+              <div className="hidden md:block">
+                <AdminTable>
+                  <THead><tr><Th>Organization</Th><Th>Plan</Th><Th>Status</Th><Th>Expiry</Th><Th>Payment</Th><Th>Usage</Th></tr></THead>
+                  <TBody>
+                    {orgs.slice(0, 8).map((org) => (
+                      <Tr key={org.organization.id}>
+                        <Td><Link href={`/organizations/${org.organization.id}`} style={{ color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>{org.organization.name}</Link></Td>
+                        <Td><PlanBadge planCode={org.subscription.planCode} /></Td>
+                        <Td><SubscriptionStatusBadge status={org.subscription.status} /></Td>
+                        <Td muted nowrap><div>{formatDate(org.subscription.expiresAt)}</div><div style={{ fontSize: "11px", color: "var(--muted-foreground)" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div></Td>
+                        <Td><PaymentStatusBadge status={org.subscription.paymentStatus} /></Td>
+                        <Td muted>{org.usage.branchesUsed}/{org.subscription.effectiveMaxBranches ?? "∞"} br · {org.usage.usersUsed}/{org.subscription.limits.maxStaff ?? "∞"} users</Td>
+                      </Tr>
+                    ))}
+                  </TBody>
+                </AdminTable>
+              </div>
+
+              {/* Mobile card list */}
+              <div className="flex flex-col md:hidden divide-y" style={{ borderTop: "1px solid var(--border)" }}>
                 {orgs.slice(0, 8).map((org) => (
-                  <Tr key={org.organization.id}>
-                    <Td><Link href={`/organizations/${org.organization.id}`} style={{ color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>{org.organization.name}</Link></Td>
-                    <Td><PlanBadge planCode={org.subscription.planCode} /></Td>
-                    <Td><SubscriptionStatusBadge status={org.subscription.status} /></Td>
-                    <Td muted nowrap><div>{formatDate(org.subscription.expiresAt)}</div><div style={{ fontSize: "11px", color: "var(--muted-foreground)" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div></Td>
-                    <Td><PaymentStatusBadge status={org.subscription.paymentStatus} /></Td>
-                    <Td muted>{org.usage.branchesUsed}/{org.subscription.effectiveMaxBranches ?? "∞"} br · {org.usage.usersUsed}/{org.subscription.limits.maxStaff ?? "∞"} users</Td>
-                  </Tr>
+                  <div key={org.organization.id} style={{ padding: "12px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
+                      <Link href={`/organizations/${org.organization.id}`} style={{ fontSize: 14, fontWeight: 600, color: "#2563eb", textDecoration: "none" }}>{org.organization.name}</Link>
+                      <PaymentStatusBadge status={org.subscription.paymentStatus} />
+                    </div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                      <PlanBadge planCode={org.subscription.planCode} />
+                      <SubscriptionStatusBadge status={org.subscription.status} />
+                    </div>
+                    <div style={{ display: "flex", gap: 16, fontSize: 12, color: "var(--muted-foreground)" }}>
+                      <span>Exp: {formatDate(org.subscription.expiresAt)}</span>
+                      <span>{daysRemainingLabel(org.subscription.daysRemaining)}</span>
+                    </div>
+                  </div>
                 ))}
-              </TBody>
-            </AdminTable>
+              </div>
+            </>
           )}
           {!loading && orgs.length > 0 && <TableFooter showing={Math.min(orgs.length, 8)} total={orgs.length} label="organizations" />}
         </div>

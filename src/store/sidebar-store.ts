@@ -7,6 +7,9 @@ interface SidebarState {
   toggle: () => void;
   collapse: () => void;
   expand: () => void;
+  mobileOpen: boolean;
+  openMobile: () => void;
+  closeMobile: () => void;
 }
 
 export const useSidebarStore = create<SidebarState>((set) => ({
@@ -14,4 +17,7 @@ export const useSidebarStore = create<SidebarState>((set) => ({
   toggle: () => set((s) => ({ collapsed: !s.collapsed })),
   collapse: () => set({ collapsed: true }),
   expand: () => set({ collapsed: false }),
+  mobileOpen: false,
+  openMobile: () => set({ mobileOpen: true }),
+  closeMobile: () => set({ mobileOpen: false }),
 }));

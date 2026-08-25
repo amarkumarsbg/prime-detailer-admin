@@ -1,11 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard, Building2, CreditCard, FileText,
-  RefreshCw, Receipt, Tag, Users, ClipboardList, LogOut,
-} from "lucide-react";
+import { X, LayoutDashboard, Building2, CreditCard, FileText, RefreshCw, Receipt, Tag, Users, ClipboardList, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/auth-store";
 import { useSidebarStore } from "@/store/sidebar-store";
 
@@ -43,15 +41,32 @@ function isActive(pathname: string, href: string) {
 export function Sidebar() {
   const pathname = usePathname();
   const { user, clearSession } = useAuthStore();
-  const { collapsed, collapse } = useSidebarStore();
+  const { collapsed, collapse, closeMobile } = useSidebarStore();
+  const [isMobile, setIsMobile] = useState(false);
 
-  const W = collapsed ? "56px" : "260px";
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // On mobile always show full sidebar; collapsed only applies on desktop
+  const W = (collapsed && !isMobile) ? "56px" : "260px";
+  const isCollapsed = collapsed && !isMobile;
+
+  function handleNav() {
+    collapse();
+    closeMobile();
+  }
 
   return (
     <aside
       style={{
         width: W,
         minHeight: "100vh",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         flexShrink: 0,
@@ -68,12 +83,13 @@ export function Sidebar() {
           display: "flex",
           alignItems: "center",
           gap: "12px",
-          height: "64px",
+          height: "56px",
           padding: "0 10px",
           borderBottom: "1px solid var(--border)",
           flexShrink: 0,
           overflow: "hidden",
         }}
+        className="md:h-16"
       >
         <div
           style={{
@@ -92,45 +108,54 @@ export function Sidebar() {
         >
           P
         </div>
-        {!collapsed && (
-          <div style={{ minWidth: 0, overflow: "hidden" }}>
+        {!isCollapsed && (
+          <div style={{ minWidth: 0, overflow: "hidden", flex: 1 }}>
             <p style={{ fontSize: "15px", fontWeight: 700, color: "var(--foreground)", margin: 0, lineHeight: 1.2, whiteSpace: "nowrap" }}>
               Prime Detailers
             </p>
-            <p style={{ fontSize: "11px", color: "var(--sidebar-foreground)", margin: 0, opacity: 0.8 }}>SaaS Admin</p>
+            <p style={{ fontSize: "11px", color: "var(--muted-foreground)", margin: 0, opacity: 0.8 }}>SaaS Admin</p>
           </div>
         )}
+        {/* Close button — mobile only */}
+        <button
+          aria-label="Close navigation"
+          onClick={closeMobile}
+          className="md:hidden"
+          style={{ marginLeft: "auto", width: 32, height: 32, borderRadius: 8, border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--muted-foreground)", flexShrink: 0 }}
+        >
+          <X style={{ width: 16, height: 16 }} />
+        </button>
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, overflowY: "auto", overflowX: "hidden", padding: collapsed ? "12px 0" : "12px 10px", display: "flex", flexDirection: "column", gap: collapsed ? "4px" : "12px" }}>
+      <nav style={{ flex: 1, overflowY: "auto", overflowX: "hidden", padding: isCollapsed ? "12px 0" : "12px 10px", display: "flex", flexDirection: "column", gap: isCollapsed ? "4px" : "12px" }}>
         {NAV_SECTIONS.map((section, groupIdx) => (
           <section key={section.label} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            {!collapsed && (
+            {!isCollapsed && (
               <div style={{ padding: groupIdx === 0 ? "0 12px 6px" : "16px 12px 6px" }}>
                 <h2 style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--foreground)", margin: 0 }}>
                   {section.label}
                 </h2>
               </div>
             )}
-            {collapsed && groupIdx > 0 && (
+            {isCollapsed && groupIdx > 0 && (
               <div style={{ height: "1px", background: "var(--border)", margin: "6px 8px" }} />
             )}
-            <div style={{ display: "flex", flexDirection: "column", gap: "2px", padding: collapsed ? "0 4px" : "0 6px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "2px", padding: isCollapsed ? "0 4px" : "0 6px" }}>
               {section.items.map(({ label, href, icon: Icon }) => {
                 const active = isActive(pathname, href);
                 return (
                   <Link
                     key={href}
                     href={href}
-                    title={collapsed ? label : undefined}
+                    title={isCollapsed ? label : undefined}
                     aria-label={label}
-                    onClick={() => collapse()}
+                    onClick={handleNav}
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: collapsed ? 0 : "10px",
-                      padding: collapsed ? "9px" : "9px 12px",
+                      gap: isCollapsed ? 0 : "10px",
+                      padding: isCollapsed ? "9px" : "9px 12px",
                       borderRadius: "10px",
                       fontSize: "13px",
                       fontWeight: 500,
@@ -138,7 +163,7 @@ export function Sidebar() {
                       transition: "background 0.15s, color 0.15s, transform 0.15s",
                       background: active ? "#3b82f6" : "transparent",
                       color: active ? "#ffffff" : "var(--sidebar-foreground)",
-                      justifyContent: collapsed ? "center" : undefined,
+                      justifyContent: isCollapsed ? "center" : undefined,
                       transformOrigin: "left center",
                     }}
                     onMouseEnter={(e) => {
@@ -159,7 +184,7 @@ export function Sidebar() {
                     }}
                   >
                     <Icon style={{ width: "16px", height: "16px", flexShrink: 0, opacity: active ? 1 : 0.9 }} />
-                    {!collapsed && <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</span>}
+                    {!isCollapsed && <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</span>}
                   </Link>
                 );
               })}
@@ -173,13 +198,13 @@ export function Sidebar() {
         style={{
           flexShrink: 0,
           borderTop: "1px solid var(--border)",
-          padding: collapsed ? "10px 4px" : "10px",
+          padding: isCollapsed ? "10px 4px" : "10px",
           display: "flex",
           flexDirection: "column",
           gap: "2px",
         }}
       >
-        {!collapsed && (
+        {!isCollapsed && (
           <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "10px" }}>
             <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#3b82f6", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: 700, flexShrink: 0 }}>
               {user?.name?.[0]?.toUpperCase() ?? "A"}
@@ -191,14 +216,14 @@ export function Sidebar() {
           </div>
         )}
         <button
-          title={collapsed ? "Sign out" : undefined}
+          title={isCollapsed ? "Sign out" : undefined}
           aria-label="Sign out"
           onClick={() => { clearSession(); window.location.href = "/login"; }}
           style={{
             display: "flex",
             alignItems: "center",
-            gap: collapsed ? 0 : "10px",
-            padding: collapsed ? "9px" : "8px 12px",
+            gap: isCollapsed ? 0 : "10px",
+            padding: isCollapsed ? "9px" : "8px 12px",
             borderRadius: "10px",
             fontSize: "13px",
             fontWeight: 500,
@@ -207,14 +232,14 @@ export function Sidebar() {
             border: "none",
             cursor: "pointer",
             width: "100%",
-            justifyContent: collapsed ? "center" : undefined,
+            justifyContent: isCollapsed ? "center" : undefined,
             transition: "background 0.15s",
           }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "var(--destructive-hover, #fef2f2)"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
         >
           <LogOut style={{ width: "16px", height: "16px", flexShrink: 0 }} />
-          {!collapsed && <span>Sign out</span>}
+          {!isCollapsed && <span>Sign out</span>}
         </button>
       </div>
     </aside>

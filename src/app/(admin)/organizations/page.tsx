@@ -69,7 +69,7 @@ export default function OrganizationsPage() {
           { value: "cancelled", label: "Cancelled" },
         ]} />
       </FilterBar>
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "var(--page-bg)" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "clamp(10px, 2vw, 16px) clamp(12px, 3vw, 24px)", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "12px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         {loading ? <AdminTableSkeleton rows={8} cols={7} /> : filtered.length === 0 ? (
           <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px" }}>
@@ -77,27 +77,73 @@ export default function OrganizationsPage() {
           </div>
         ) : (
           <>
-            <AdminTable>
-              <THead><tr><Th>Organization</Th><Th>Plan</Th><Th>Status</Th><Th>Expiry</Th><Th>Payment</Th><Th>Branches</Th><Th>Users</Th><Th></Th></tr></THead>
-              <TBody>
-                {filtered.map((org) => (
-                  <Tr key={org.organization.id}>
-                    <Td>
-                      <Link href={`/organizations/${org.organization.id}`} style={{ color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>{org.organization.name}</Link>
-                      <div style={{ fontSize: "11px", color: "var(--muted-foreground)", fontFamily: "monospace" }}>{org.organization.id}</div>
-                    </Td>
-                    <Td><PlanBadge planCode={org.subscription.planCode} /></Td>
-                    <Td><SubscriptionStatusBadge status={org.subscription.status} /></Td>
-                    <Td muted nowrap><div>{formatDate(org.subscription.expiresAt)}</div><div style={{ fontSize: "11px", color: "var(--muted-foreground)" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div></Td>
-                    <Td><PaymentStatusBadge status={org.subscription.paymentStatus} /></Td>
-                    <Td muted>{org.usage.branchesUsed} / {org.subscription.effectiveMaxBranches ?? "∞"}</Td>
-                    <Td muted>{org.usage.usersUsed} / {org.subscription.limits.maxStaff ?? "∞"}</Td>
-                    <Td><Link href={`/organizations/${org.organization.id}`} style={{ fontSize: "12px", fontWeight: 500, color: "#2563eb", textDecoration: "none", padding: "4px 10px", border: "1px solid #bfdbfe", borderRadius: "5px", background: "#eff6ff" }}>Manage</Link></Td>
-                  </Tr>
-                ))}
-              </TBody>
-            </AdminTable>
-            <TableFooter showing={filtered.length} total={orgs.length} label="organizations" />
+            {/* ── Desktop table (md+) ── */}
+            <div className="hidden md:block">
+              <AdminTable>
+                <THead><tr><Th>Organization</Th><Th>Plan</Th><Th>Status</Th><Th>Expiry</Th><Th>Payment</Th><Th>Branches</Th><Th>Users</Th><Th></Th></tr></THead>
+                <TBody>
+                  {filtered.map((org) => (
+                    <Tr key={org.organization.id}>
+                      <Td>
+                        <Link href={`/organizations/${org.organization.id}`} style={{ color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>{org.organization.name}</Link>
+                        <div style={{ fontSize: "11px", color: "var(--muted-foreground)", fontFamily: "monospace" }}>{org.organization.id}</div>
+                      </Td>
+                      <Td><PlanBadge planCode={org.subscription.planCode} /></Td>
+                      <Td><SubscriptionStatusBadge status={org.subscription.status} /></Td>
+                      <Td muted nowrap><div>{formatDate(org.subscription.expiresAt)}</div><div style={{ fontSize: "11px", color: "var(--muted-foreground)" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div></Td>
+                      <Td><PaymentStatusBadge status={org.subscription.paymentStatus} /></Td>
+                      <Td muted>{org.usage.branchesUsed} / {org.subscription.effectiveMaxBranches ?? "∞"}</Td>
+                      <Td muted>{org.usage.usersUsed} / {org.subscription.limits.maxStaff ?? "∞"}</Td>
+                      <Td><Link href={`/organizations/${org.organization.id}`} style={{ fontSize: "12px", fontWeight: 500, color: "#2563eb", textDecoration: "none", padding: "4px 10px", border: "1px solid #bfdbfe", borderRadius: "5px", background: "#eff6ff" }}>Manage</Link></Td>
+                    </Tr>
+                  ))}
+                </TBody>
+              </AdminTable>
+              <TableFooter showing={filtered.length} total={orgs.length} label="organizations" />
+            </div>
+
+            {/* ── Mobile card list (< md) ── */}
+            <div className="flex flex-col gap-3 md:hidden">
+              {filtered.map((org) => (
+                <div key={org.organization.id} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
+                  {/* Header row */}
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <Link href={`/organizations/${org.organization.id}`} style={{ fontSize: 14, fontWeight: 600, color: "#2563eb", textDecoration: "none", display: "block" }}>{org.organization.name}</Link>
+                      <span style={{ fontSize: 11, color: "var(--muted-foreground)", fontFamily: "monospace" }}>{org.organization.id}</span>
+                    </div>
+                    <Link href={`/organizations/${org.organization.id}`} style={{ fontSize: 12, fontWeight: 500, color: "#2563eb", textDecoration: "none", padding: "5px 12px", border: "1px solid #bfdbfe", borderRadius: 6, background: "#eff6ff", whiteSpace: "nowrap", flexShrink: 0 }}>Manage</Link>
+                  </div>
+
+                  {/* Badges row */}
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                    <PlanBadge planCode={org.subscription.planCode} />
+                    <SubscriptionStatusBadge status={org.subscription.status} />
+                    <PaymentStatusBadge status={org.subscription.paymentStatus} />
+                  </div>
+
+                  {/* Info grid */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
+                    <div>
+                      <div style={{ fontSize: 10, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>Expiry</div>
+                      <div style={{ fontSize: 13, color: "var(--foreground)" }}>{formatDate(org.subscription.expiresAt)}</div>
+                      <div style={{ fontSize: 11, color: "var(--muted-foreground)" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 10, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>Usage</div>
+                      <div style={{ fontSize: 13, color: "var(--foreground)" }}>
+                        {org.usage.branchesUsed}/{org.subscription.effectiveMaxBranches ?? "∞"} branches
+                        &nbsp;·&nbsp;
+                        {org.usage.usersUsed}/{org.subscription.limits.maxStaff ?? "∞"} users
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div style={{ fontSize: 12, color: "var(--muted-foreground)", textAlign: "center", paddingTop: 4 }}>
+                Showing {filtered.length} of {orgs.length} organizations
+              </div>
+            </div>
           </>
         )}
       </div>
