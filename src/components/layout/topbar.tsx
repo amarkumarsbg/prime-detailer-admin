@@ -42,9 +42,9 @@ export function Topbar({ title, description, actions }: TopbarProps) {
       {/* Mobile hamburger */}
       <button
         aria-label="Open navigation"
-        className="md:hidden"
+        className="flex md:hidden"
         onClick={openMobile}
-        style={{ width: 36, height: 36, borderRadius: 8, border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--muted-foreground)", flexShrink: 0 }}
+        style={{ width: 36, height: 36, borderRadius: 8, border: "none", background: "transparent", cursor: "pointer", alignItems: "center", justifyContent: "center", color: "var(--muted-foreground)", flexShrink: 0 }}
       >
         <Menu style={{ width: 20, height: 20 }} />
       </button>

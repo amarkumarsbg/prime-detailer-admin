@@ -120,8 +120,8 @@ export function Sidebar() {
         <button
           aria-label="Close navigation"
           onClick={closeMobile}
-          className="md:hidden"
-          style={{ marginLeft: "auto", width: 32, height: 32, borderRadius: 8, border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--muted-foreground)", flexShrink: 0 }}
+          className="flex md:hidden"
+          style={{ marginLeft: "auto", width: 32, height: 32, borderRadius: 8, border: "none", background: "transparent", cursor: "pointer", alignItems: "center", justifyContent: "center", color: "var(--muted-foreground)", flexShrink: 0 }}
         >
           <X style={{ width: 16, height: 16 }} />
         </button>
