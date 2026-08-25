@@ -25,13 +25,13 @@ export function PageHeader({ title, description, actions, badge }: PageHeaderPro
     >
       <div style={{ minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <h1 style={{ fontSize: "16px", fontWeight: 600, color: "#0f172a", margin: 0 }}>
+          <h1 style={{ fontSize: "16px", fontWeight: 600, color: "var(--foreground)", margin: 0 }}>
             {title}
           </h1>
           {badge}
         </div>
         {description && (
-          <p style={{ fontSize: "13px", color: "#64748b", margin: "2px 0 0" }}>{description}</p>
+          <p style={{ fontSize: "13px", color: "var(--muted-foreground)", margin: "2px 0 0" }}>{description}</p>
         )}
       </div>
       {actions && (

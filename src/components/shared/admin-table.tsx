@@ -8,8 +8,8 @@ export function AdminTable({ children }: { children: ReactNode }) {
   return (
     <div
       style={{
-        background: "#ffffff",
-        border: "1px solid #e2e8f0",
+        background: "var(--card)",
+        border: "1px solid var(--border)",
         borderRadius: "12px",
         overflow: "hidden",
       }}
@@ -27,7 +27,7 @@ export function AdminTable({ children }: { children: ReactNode }) {
 
 export function THead({ children }: { children: ReactNode }) {
   return (
-    <thead style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+    <thead style={{ background: "var(--secondary)", borderBottom: "1px solid var(--border)" }}>
       {children}
     </thead>
   );
@@ -49,7 +49,7 @@ export function Th({ children, align = "left", width }: ThProps) {
         textAlign: align,
         fontWeight: 600,
         fontSize: "11px",
-        color: "#64748b",
+        color: "var(--muted-foreground)",
         textTransform: "uppercase",
         letterSpacing: "0.04em",
         whiteSpace: "nowrap",
@@ -64,7 +64,7 @@ export function Th({ children, align = "left", width }: ThProps) {
 // ─── Table body ───────────────────────────────────────────────────────────────
 
 export function TBody({ children }: { children: ReactNode }) {
-  return <tbody style={{ color: "#0f172a" }}>{children}</tbody>;
+  return <tbody style={{ color: "var(--foreground)" }}>{children}</tbody>;
 }
 
 // ─── Table row ────────────────────────────────────────────────────────────────
@@ -79,11 +79,11 @@ export function Tr({ children, onClick }: TrProps) {
     <tr
       onClick={onClick}
       style={{
-        borderBottom: "1px solid #f1f5f9",
+        borderBottom: "1px solid var(--border)",
         cursor: onClick ? "pointer" : undefined,
         transition: "background 0.1s",
       }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "#f8fafc"; }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "var(--secondary)"; }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = ""; }}
     >
       {children}
@@ -109,7 +109,7 @@ export function Td({ children, align = "left", muted, mono, nowrap, bold, style 
       style={{
         padding: "11px 16px",
         textAlign: align,
-        color: muted ? "#64748b" : "#0f172a",
+        color: muted ? "var(--muted-foreground)" : "var(--foreground)",
         fontFamily: mono ? "ui-monospace, monospace" : undefined,
         fontSize: mono ? "12px" : "13px",
         whiteSpace: nowrap ? "nowrap" : undefined,
@@ -130,10 +130,10 @@ export function TableFooter({ showing, total, label = "rows" }: { showing: numbe
     <div
       style={{
         padding: "10px 16px",
-        borderTop: "1px solid #f1f5f9",
-        background: "#f8fafc",
+        borderTop: "1px solid var(--border)",
+        background: "var(--secondary)",
         fontSize: "12px",
-        color: "#94a3b8",
+        color: "var(--muted-foreground)",
       }}
     >
       Showing {showing} of {total} {label}
@@ -145,16 +145,16 @@ export function TableFooter({ showing, total, label = "rows" }: { showing: numbe
 
 export function AdminTableSkeleton({ rows = 6, cols = 6 }: { rows?: number; cols?: number }) {
   return (
-    <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "12px", overflow: "hidden" }}>
-      <div style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0", padding: "10px 16px", display: "flex", gap: "12px" }}>
+    <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden" }}>
+      <div style={{ background: "var(--secondary)", borderBottom: "1px solid var(--border)", padding: "10px 16px", display: "flex", gap: "12px" }}>
         {Array.from({ length: cols }).map((_, i) => (
-          <div key={i} style={{ flex: 1, height: "12px", background: "#e2e8f0", borderRadius: "4px", animation: "pulse 1.5s ease-in-out infinite" }} />
+          <div key={i} style={{ flex: 1, height: "12px", background: "var(--border)", borderRadius: "4px", animation: "pulse 1.5s ease-in-out infinite" }} />
         ))}
       </div>
       {Array.from({ length: rows }).map((_, r) => (
-        <div key={r} style={{ padding: "12px 16px", borderBottom: "1px solid #f1f5f9", display: "flex", gap: "12px" }}>
+        <div key={r} style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)", display: "flex", gap: "12px" }}>
           {Array.from({ length: cols }).map((_, c) => (
-            <div key={c} style={{ flex: 1, height: "14px", background: "#f8fafc", borderRadius: "4px", animation: "pulse 1.5s ease-in-out infinite" }} />
+            <div key={c} style={{ flex: 1, height: "14px", background: "var(--secondary)", borderRadius: "4px", animation: "pulse 1.5s ease-in-out infinite" }} />
           ))}
         </div>
       ))}

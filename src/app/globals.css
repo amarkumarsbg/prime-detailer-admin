@@ -33,6 +33,33 @@
   --sidebar-active: #2563eb;
   --sidebar-active-fg: #ffffff;
   --sidebar-hover: rgba(255,255,255,0.06);
+  --page-bg: #f8fafc;
+  --topbar-bg: #ffffff;
+  --topbar-border: #e2e8f0;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #e2e8f0;
+  --accent-foreground: #f1f5f9;
+  --border: #334155;
+  --input: #334155;
+  --ring: #3b82f6;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --page-bg: #0f172a;
+  --topbar-bg: #1e293b;
+  --topbar-border: #334155;
+  --sidebar-foreground: #94a3b8;
+  --sidebar-accent: #1e3a5f;
 }
 
 * {
@@ -69,5 +96,17 @@ body {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* ── Dark mode overrides for components using hardcoded Tailwind classes ── */
+.dark .bg-slate-50 { background-color: var(--secondary) !important; }
+.dark .bg-slate-100 { background-color: var(--secondary) !important; }
+.dark .hover\:bg-slate-50:hover { background-color: var(--secondary) !important; }
+.dark .border-slate-200,
+.dark .border-\[var\(--border\)\] { border-color: var(--border) !important; }
+.dark .text-slate-900 { color: var(--foreground) !important; }
+.dark .text-slate-700 { color: var(--card-foreground) !important; }
+.dark .text-slate-600 { color: var(--muted-foreground) !important; }
+.dark .text-slate-500 { color: var(--muted-foreground) !important; }
+.dark .text-slate-400 { color: var(--muted-foreground) !important; }
 
 

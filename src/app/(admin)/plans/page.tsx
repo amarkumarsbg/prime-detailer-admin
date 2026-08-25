@@ -27,14 +27,14 @@ const ADDONS = [
 ];
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <h2 style={{ fontSize: "13px", fontWeight: 600, color: "#0f172a", margin: "0 0 8px" }}>{children}</h2>;
+  return <h2 style={{ fontSize: "13px", fontWeight: 600, color: "var(--foreground)", margin: "0 0 8px" }}>{children}</h2>;
 }
 
 export default function PlansPage() {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <Topbar title="Plans & Pricing" description="Plan catalog and pricing configuration" />
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px", background: "#f8fafc" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px", background: "var(--page-bg)" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", padding: "10px 14px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "8px", marginBottom: "20px", fontSize: "13px", color: "#1d4ed8" }}>
           <Info style={{ width: "14px", height: "14px", marginTop: "2px", flexShrink: 0 }} />
           <span>Pricing is configured via backend environment variables. Update the backend <code style={{ background: "#dbeafe", padding: "1px 4px", borderRadius: "3px" }}>.env</code> and restart the API to change prices.</span>
@@ -53,7 +53,7 @@ export default function PlansPage() {
               <THead><tr><Th>Term</Th><Th>Environment Variable</Th><Th>Default</Th></tr></THead>
               <TBody>{TERM_PRICING.map((p) => (<Tr key={p.env}><Td style={{ fontWeight: 500 }}>{p.label}</Td><Td mono muted>{p.env}</Td><Td muted>{p.default}</Td></Tr>))}</TBody>
             </AdminTable>
-            <p style={{ fontSize: "11px", color: "#94a3b8", margin: "6px 0 0" }}>Multipliers: Growth ×1.8 · Business ×3 · Enterprise ×5 · Custom ×1 (via SUBSCRIPTION_PRICE_MULTIPLIER_* env vars)</p>
+            <p style={{ fontSize: "11px", color: "var(--muted-foreground)", margin: "6px 0 0" }}>Multipliers: Growth ×1.8 · Business ×3 · Enterprise ×5 · Custom ×1 (via SUBSCRIPTION_PRICE_MULTIPLIER_* env vars)</p>
           </div>
           <div>
             <SectionTitle>Add-on Pricing</SectionTitle>

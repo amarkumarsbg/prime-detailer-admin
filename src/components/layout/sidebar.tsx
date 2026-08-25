@@ -55,8 +55,8 @@ export function Sidebar() {
         display: "flex",
         flexDirection: "column",
         flexShrink: 0,
-        background: "#ffffff",
-        borderRight: "1px solid #cbd5e1",
+        background: "var(--card)",
+        borderRight: "1px solid var(--border)",
         boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
         transition: "width 0.2s ease",
         overflow: "hidden",
@@ -70,7 +70,7 @@ export function Sidebar() {
           gap: "12px",
           height: "64px",
           padding: "0 10px",
-          borderBottom: "1px solid #cbd5e1",
+          borderBottom: "1px solid var(--border)",
           flexShrink: 0,
           overflow: "hidden",
         }}
@@ -94,10 +94,10 @@ export function Sidebar() {
         </div>
         {!collapsed && (
           <div style={{ minWidth: 0, overflow: "hidden" }}>
-            <p style={{ fontSize: "15px", fontWeight: 700, color: "#0f172a", margin: 0, lineHeight: 1.2, whiteSpace: "nowrap" }}>
+            <p style={{ fontSize: "15px", fontWeight: 700, color: "var(--foreground)", margin: 0, lineHeight: 1.2, whiteSpace: "nowrap" }}>
               Prime Detailers
             </p>
-            <p style={{ fontSize: "11px", color: "#475569", margin: 0, opacity: 0.8 }}>SaaS Admin</p>
+            <p style={{ fontSize: "11px", color: "var(--sidebar-foreground)", margin: 0, opacity: 0.8 }}>SaaS Admin</p>
           </div>
         )}
       </div>
@@ -108,13 +108,13 @@ export function Sidebar() {
           <section key={section.label} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             {!collapsed && (
               <div style={{ padding: groupIdx === 0 ? "0 12px 6px" : "16px 12px 6px" }}>
-                <h2 style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#0f172a", margin: 0 }}>
+                <h2 style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--foreground)", margin: 0 }}>
                   {section.label}
                 </h2>
               </div>
             )}
             {collapsed && groupIdx > 0 && (
-              <div style={{ height: "1px", background: "#f1f5f9", margin: "6px 8px" }} />
+              <div style={{ height: "1px", background: "var(--border)", margin: "6px 8px" }} />
             )}
             <div style={{ display: "flex", flexDirection: "column", gap: "2px", padding: collapsed ? "0 4px" : "0 6px" }}>
               {section.items.map(({ label, href, icon: Icon }) => {
@@ -137,7 +137,7 @@ export function Sidebar() {
                       textDecoration: "none",
                       transition: "background 0.15s, color 0.15s, transform 0.15s",
                       background: active ? "#3b82f6" : "transparent",
-                      color: active ? "#ffffff" : "#475569",
+                      color: active ? "#ffffff" : "var(--sidebar-foreground)",
                       justifyContent: collapsed ? "center" : undefined,
                       transformOrigin: "left center",
                     }}
@@ -145,8 +145,8 @@ export function Sidebar() {
                       const el = e.currentTarget as HTMLAnchorElement;
                       el.style.transform = "scale(1.04)";
                       if (!active) {
-                        el.style.background = "#dbeafe";
-                        el.style.color = "#0f172a";
+                        el.style.background = "var(--sidebar-accent)";
+                        el.style.color = "var(--foreground)";
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -154,7 +154,7 @@ export function Sidebar() {
                       el.style.transform = "scale(1)";
                       if (!active) {
                         el.style.background = "transparent";
-                        el.style.color = "#475569";
+                        el.style.color = "var(--sidebar-foreground)";
                       }
                     }}
                   >
@@ -172,7 +172,7 @@ export function Sidebar() {
       <div
         style={{
           flexShrink: 0,
-          borderTop: "1px solid #cbd5e1",
+          borderTop: "1px solid var(--border)",
           padding: collapsed ? "10px 4px" : "10px",
           display: "flex",
           flexDirection: "column",
@@ -185,8 +185,8 @@ export function Sidebar() {
               {user?.name?.[0]?.toUpperCase() ?? "A"}
             </div>
             <div style={{ minWidth: 0, flex: 1 }}>
-              <p style={{ fontSize: "13px", fontWeight: 500, color: "#0f172a", margin: 0, lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.name ?? "Admin"}</p>
-              <p style={{ fontSize: "10px", color: "#64748b", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.role}</p>
+              <p style={{ fontSize: "13px", fontWeight: 500, color: "var(--foreground)", margin: 0, lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.name ?? "Admin"}</p>
+              <p style={{ fontSize: "10px", color: "var(--muted-foreground)", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.role}</p>
             </div>
           </div>
         )}
@@ -210,7 +210,7 @@ export function Sidebar() {
             justifyContent: collapsed ? "center" : undefined,
             transition: "background 0.15s",
           }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#fef2f2"; }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "var(--destructive-hover, #fef2f2)"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
         >
           <LogOut style={{ width: "16px", height: "16px", flexShrink: 0 }} />

@@ -53,7 +53,7 @@ export function InlineLoader({ label = "Loading…" }: InlineLoaderProps) {
         justifyContent: "center",
         gap: "8px",
         padding: "48px 24px",
-        color: "#64748b",
+        color: "var(--muted-foreground)",
         fontSize: "13px",
       }}
     >

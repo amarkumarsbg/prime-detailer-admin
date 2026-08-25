@@ -50,18 +50,18 @@ export default function PaymentsPage() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <Topbar title="Payments" description={`${rows.length} payment records`} />
       <FilterBar searchValue={search} onSearch={setSearch} searchPlaceholder="Search org or txn ref…" onRefresh={() => load(true)} refreshing={refreshing}>
-        <FilterSelect value={filterStatus} onChange={setFilterStatus}>
-          <option value="all">All Statuses</option>
-          <option value="PENDING">Pending</option>
-          <option value="PROCESSING">Processing</option>
-          <option value="PAID">Paid</option>
-          <option value="FAILED">Failed</option>
-        </FilterSelect>
+        <FilterSelect value={filterStatus} onChange={setFilterStatus} options={[
+          { value: "all", label: "All Statuses" },
+          { value: "PENDING", label: "Pending" },
+          { value: "PROCESSING", label: "Processing" },
+          { value: "PAID", label: "Paid" },
+          { value: "FAILED", label: "Failed" },
+        ]} />
       </FilterBar>
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "#f8fafc" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "12px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         {loading ? <AdminTableSkeleton rows={8} cols={8} /> : displayed.length === 0 ? (
-          <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "12px" }}><EmptyState icon={FileText} title="No payments found" /></div>
+          <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px" }}><EmptyState icon={FileText} title="No payments found" /></div>
         ) : (
           <>
             <AdminTable>

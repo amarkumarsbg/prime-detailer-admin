@@ -48,7 +48,7 @@ export default function DashboardPage() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <RefreshingBar show={refreshing} />
       <Topbar title="Dashboard" description="Platform overview" />
-      <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px", background: "#f8fafc" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "16px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "12px", marginBottom: "20px" }}>
           <StatCard label="Total Orgs" value={loading ? "—" : stats.total} icon={Building2} iconBg="#eff6ff" iconColor="#2563eb" loading={loading} />
@@ -57,9 +57,9 @@ export default function DashboardPage() {
           <StatCard label="Expired" value={loading ? "—" : stats.expired} sub="need renewal" icon={XCircle} iconBg="#fef2f2" iconColor="#dc2626" loading={loading} />
           <StatCard label="Pending Payment" value={loading ? "—" : stats.pendingPayments} sub="awaiting" icon={CreditCard} iconBg="#fff7ed" iconColor="#ea580c" loading={loading} />
         </div>
-        <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "12px", overflow: "hidden" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 18px 10px", borderBottom: "1px solid #f1f5f9" }}>
-            <p style={{ fontSize: "13px", fontWeight: 600, color: "#0f172a", margin: 0 }}>Recent Organizations</p>
+        <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 18px 10px", borderBottom: "1px solid var(--border)" }}>
+            <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--foreground)", margin: 0 }}>Recent Organizations</p>
             <Link href="/organizations" style={{ fontSize: "12px", color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>View all →</Link>
           </div>
           {loading ? <AdminTableSkeleton rows={5} cols={6} /> : orgs.length === 0 ? (
@@ -73,7 +73,7 @@ export default function DashboardPage() {
                     <Td><Link href={`/organizations/${org.organization.id}`} style={{ color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>{org.organization.name}</Link></Td>
                     <Td><PlanBadge planCode={org.subscription.planCode} /></Td>
                     <Td><SubscriptionStatusBadge status={org.subscription.status} /></Td>
-                    <Td muted nowrap><div>{formatDate(org.subscription.expiresAt)}</div><div style={{ fontSize: "11px", color: "#94a3b8" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div></Td>
+                    <Td muted nowrap><div>{formatDate(org.subscription.expiresAt)}</div><div style={{ fontSize: "11px", color: "var(--muted-foreground)" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div></Td>
                     <Td><PaymentStatusBadge status={org.subscription.paymentStatus} /></Td>
                     <Td muted>{org.usage.branchesUsed}/{org.subscription.effectiveMaxBranches ?? "∞"} br · {org.usage.usersUsed}/{org.subscription.limits.maxStaff ?? "∞"} users</Td>
                   </Tr>

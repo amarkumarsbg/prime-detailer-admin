@@ -10,7 +10,7 @@ const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
   success:     { background: "#f0fdf4", color: "#15803d", border: "1px solid #86efac" },
   warning:     { background: "#fffbeb", color: "#b45309", border: "1px solid #fcd34d" },
   info:        { background: "#eff6ff", color: "#1d4ed8", border: "1px solid #93c5fd" },
-  muted:       { background: "#f8fafc", color: "#64748b", border: "1px solid #e2e8f0" },
+  muted:       { background: "var(--secondary)", color: "var(--muted-foreground)", border: "1px solid var(--border)" },
 };
 
 const BASE_STYLE: React.CSSProperties = {

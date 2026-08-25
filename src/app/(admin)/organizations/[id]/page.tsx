@@ -48,8 +48,8 @@ import type {
 // ─── Design constants ─────────────────────────────────────────────────────────
 
 const CARD_STYLE: React.CSSProperties = {
-  background: "#ffffff",
-  border: "1px solid #e2e8f0",
+  background: "var(--card)",
+  border: "1px solid var(--border)",
   borderRadius: 14,
   boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.04)",
   overflow: "hidden",
@@ -66,10 +66,10 @@ function OrgCardHeader({ title, subtitle, right }: { title: string; subtitle?: s
     <div style={{ padding: "20px 24px 0" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div>
-          <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600, color: "#0f172a", letterSpacing: "-0.1px" }}>
+          <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600, color: "var(--foreground)", letterSpacing: "-0.1px" }}>
             {title}
           </h3>
-          {subtitle && <p style={{ margin: "3px 0 0", fontSize: 12, color: "#94a3b8" }}>{subtitle}</p>}
+          {subtitle && <p style={{ margin: "3px 0 0", fontSize: 12, color: "var(--muted-foreground)" }}>{subtitle}</p>}
         </div>
         {right && <div style={{ flexShrink: 0 }}>{right}</div>}
       </div>
@@ -86,10 +86,10 @@ function OrgCardBody({ children, style }: { children: React.ReactNode; style?: R
 function InfoField({ label, children }: { label: string; children?: React.ReactNode }) {
   return (
     <div>
-      <div style={{ fontSize: 10, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 5 }}>
+      <div style={{ fontSize: 10, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 5 }}>
         {label}
       </div>
-      <div style={{ fontSize: 14, fontWeight: 500, color: "#0f172a", lineHeight: 1.4 }}>
+      <div style={{ fontSize: 14, fontWeight: 500, color: "var(--foreground)", lineHeight: 1.4 }}>
         {children ?? "—"}
       </div>
     </div>
@@ -101,17 +101,17 @@ function UsageField({ label, used, limit }: { label: string; used: number; limit
   const pct = limit != null && limit > 0 ? Math.min((used / limit) * 100, 100) : 0;
   return (
     <div>
-      <div style={{ fontSize: 10, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 5 }}>
+      <div style={{ fontSize: 10, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 5 }}>
         {label}
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 7 }}>
-        <span style={{ fontSize: 14, fontWeight: 500, color: isOver ? "#d97706" : "#0f172a" }}>
+        <span style={{ fontSize: 14, fontWeight: 500, color: isOver ? "#d97706" : "var(--foreground)" }}>
           {used} / {limit ?? "∞"}
         </span>
         {isOver && <AlertTriangle style={{ width: 13, height: 13, color: "#f59e0b", flexShrink: 0 }} />}
       </div>
       {limit != null && (
-        <div style={{ height: 3, borderRadius: 2, background: "#f1f5f9", overflow: "hidden" }}>
+        <div style={{ height: 3, borderRadius: 2, background: "var(--secondary)", overflow: "hidden" }}>
           <div style={{ height: "100%", borderRadius: 2, width: `${pct}%`, background: isOver ? "#f59e0b" : "#3b82f6", transition: "width 0.3s ease" }} />
         </div>
       )}
@@ -122,7 +122,7 @@ function UsageField({ label, used, limit }: { label: string; used: number; limit
 function FormField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <label style={{ fontSize: 11, fontWeight: 600, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <label style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </label>
       {children}
@@ -166,9 +166,9 @@ function SelectInput({ value, onChange, options, disabled }: {
           gap: 8,
           border: open ? "1px solid #3b82f6" : "1px solid #e2e8f0",
           borderRadius: 8,
-          background: disabled ? "#f8fafc" : "#ffffff",
+          background: disabled ? "var(--secondary)" : "var(--card)",
           fontSize: 13,
-          color: "#0f172a",
+          color: "var(--foreground)",
           cursor: disabled ? "not-allowed" : "pointer",
           opacity: disabled ? 0.6 : 1,
           outline: "none",
@@ -184,7 +184,7 @@ function SelectInput({ value, onChange, options, disabled }: {
           fill="none"
           style={{
             flexShrink: 0,
-            color: "#94a3b8",
+            color: "var(--muted-foreground)",
             transform: open ? "rotate(180deg)" : "none",
             transition: "transform 0.15s",
           }}
@@ -201,8 +201,8 @@ function SelectInput({ value, onChange, options, disabled }: {
             top: "calc(100% + 4px)",
             left: 0,
             right: 0,
-            background: "#ffffff",
-            border: "1px solid #e2e8f0",
+            background: "var(--card)",
+            border: "1px solid var(--border)",
             borderRadius: 10,
             boxShadow: "0 4px 16px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06)",
             zIndex: 100,
@@ -226,14 +226,14 @@ function SelectInput({ value, onChange, options, disabled }: {
                   borderRadius: 6,
                   border: "none",
                   background: isActive ? "#eff6ff" : "transparent",
-                  color: isActive ? "#1d4ed8" : "#0f172a",
+                  color: isActive ? "#1d4ed8" : "var(--foreground)",
                   fontSize: 13,
                   fontWeight: isActive ? 600 : 400,
                   cursor: "pointer",
                   textAlign: "left",
                   transition: "background 0.1s",
                 }}
-                onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = "#f8fafc"; }}
+                onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = "rgba(99,120,150,0.18)"; }}
                 onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
               >
                 {isActive && (
@@ -255,13 +255,13 @@ function SelectInput({ value, onChange, options, disabled }: {
 
 function InlineTable({ heads, children }: { heads: { label: string; align?: "left" | "right" }[]; children: React.ReactNode }) {
   return (
-    <div style={{ border: "1px solid #e2e8f0", borderRadius: 10, overflow: "hidden" }}>
+    <div style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
       <div style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-          <thead style={{ background: "#f8fafc", borderBottom: "1px solid #e2e8f0" }}>
+          <thead style={{ background: "var(--secondary)", borderBottom: "1px solid var(--border)" }}>
             <tr>
               {heads.map((h, i) => (
-                <th key={i} style={{ padding: "9px 12px", textAlign: h.align ?? "left", fontSize: 11, fontWeight: 600, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.04em", whiteSpace: "nowrap" }}>
+                <th key={i} style={{ padding: "9px 12px", textAlign: h.align ?? "left", fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.04em", whiteSpace: "nowrap" }}>
                   {h.label}
                 </th>
               ))}
@@ -288,7 +288,7 @@ function InlineRow({ children, idx }: { children: React.ReactNode; idx: number }
 
 function InlineTd({ children, align = "left", muted, bold }: { children?: React.ReactNode; align?: "left" | "right"; muted?: boolean; bold?: boolean }) {
   return (
-    <td style={{ padding: "10px 12px", textAlign: align, color: muted ? "#64748b" : "#0f172a", fontWeight: bold ? 600 : undefined, fontSize: muted ? 12 : 13 }}>
+    <td style={{ padding: "10px 12px", textAlign: align, color: muted ? "var(--muted-foreground)" : "var(--foreground)", fontWeight: bold ? 600 : undefined, fontSize: muted ? 12 : 13 }}>
       {children ?? "—"}
     </td>
   );
@@ -297,14 +297,14 @@ function InlineTd({ children, align = "left", muted, bold }: { children?: React.
 // ─── Skeleton + Empty ─────────────────────────────────────────────────────────
 
 function Skel({ h, w = "100%" }: { h: number | string; w?: string }) {
-  return <div style={{ height: h, width: w, background: "#f1f5f9", borderRadius: 6 }} />;
+  return <div style={{ height: h, width: w, background: "var(--secondary)", borderRadius: 6 }} />;
 }
 
 function EmptyState({ icon: Icon, message }: { icon: React.ElementType; message: string }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "24px 0" }}>
       <Icon style={{ width: 28, height: 28, color: "#cbd5e1" }} />
-      <span style={{ fontSize: 13, color: "#94a3b8" }}>{message}</span>
+      <span style={{ fontSize: 13, color: "var(--muted-foreground)" }}>{message}</span>
     </div>
   );
 }
@@ -402,7 +402,7 @@ export default function OrgDetailPage() {
   if (loading) return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <Topbar />
-      <div style={{ flex: 1, overflowY: "auto", background: "#f8fafc", padding: "24px" }}>
+      <div style={{ flex: 1, overflowY: "auto", background: "var(--page-bg)", padding: "24px" }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
           <OrgCard>
             <OrgCardBody>
@@ -477,7 +477,7 @@ export default function OrgDetailPage() {
         }
       />
 
-      <div style={{ flex: 1, overflowY: "auto", background: "#f8fafc", padding: "24px" }}>
+      <div style={{ flex: 1, overflowY: "auto", background: "var(--page-bg)", padding: "24px" }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
 
           {/* Row 1 – Subscription overview */}
@@ -550,22 +550,22 @@ export default function OrgDetailPage() {
                   type="button"
                   onClick={() => setMarkPaidOpen(true)}
                   disabled={markPaidLoading}
-                  style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 10, cursor: markPaidLoading ? "not-allowed" : "pointer", opacity: markPaidLoading ? 0.7 : 1, textAlign: "left", transition: "background 0.12s" }}
-                  onMouseEnter={(e) => { if (!markPaidLoading) e.currentTarget.style.background = "#f1f5f9"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "#f8fafc"; }}
+                  style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", background: "rgba(99,120,150,0.12)", border: "1px solid var(--border)", borderRadius: 10, cursor: markPaidLoading ? "not-allowed" : "pointer", opacity: markPaidLoading ? 0.7 : 1, textAlign: "left", transition: "background 0.12s" }}
+                  onMouseEnter={(e) => { if (!markPaidLoading) e.currentTarget.style.background = "rgba(99,120,150,0.22)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(99,120,150,0.12)"; }}
                 >
-                  <span style={{ flexShrink: 0, width: 34, height: 34, background: "#eff6ff", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ flexShrink: 0, width: 34, height: 34, background: "rgba(59,130,246,0.15)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <CreditCard style={{ width: 16, height: 16, color: "#3b82f6" }} />
                   </span>
                   <span style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#0f172a" }}>
+                    <span style={{ display: "block", fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
                       {markPaidLoading ? "Processing…" : "Mark as Paid"}
                     </span>
-                    <span style={{ display: "block", fontSize: 12, color: "#94a3b8", marginTop: 2 }}>
+                    <span style={{ display: "block", fontSize: 12, color: "var(--muted-foreground)", marginTop: 2 }}>
                       Activate subscription and record payment
                     </span>
                   </span>
-                  {markPaidLoading && <Loader2 className="animate-spin" style={{ width: 14, height: 14, color: "#94a3b8", flexShrink: 0 }} />}
+                  {markPaidLoading && <Loader2 className="animate-spin" style={{ width: 14, height: 14, color: "var(--muted-foreground)", flexShrink: 0 }} />}
                 </button>
               </OrgCardBody>
             </OrgCard>
@@ -637,12 +637,12 @@ export default function OrgDetailPage() {
       {/* Mark Paid Modal */}
       {markPaidOpen && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: 16 }}>
-          <div style={{ background: "#fff", borderRadius: 16, boxShadow: "0 20px 60px rgba(0,0,0,0.18)", width: "100%", maxWidth: 440, overflow: "hidden" }}>
+          <div style={{ background: "var(--card)", borderRadius: 16, boxShadow: "0 20px 60px rgba(0,0,0,0.18)", width: "100%", maxWidth: 440, overflow: "hidden" }}>
             <div style={{ padding: "24px 24px 0" }}>
-              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: "#0f172a" }}>Mark Subscription Paid</h2>
-              <p style={{ margin: "6px 0 0", fontSize: 13, color: "#64748b", lineHeight: 1.5 }}>
+              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: "var(--foreground)" }}>Mark Subscription Paid</h2>
+              <p style={{ margin: "6px 0 0", fontSize: 13, color: "var(--muted-foreground)", lineHeight: 1.5 }}>
                 This will immediately activate the subscription for{" "}
-                <strong style={{ color: "#0f172a" }}>{org.organization.name}</strong>.
+                <strong style={{ color: "var(--foreground)" }}>{org.organization.name}</strong>.
                 A renewal record and bill will be generated.
               </p>
             </div>

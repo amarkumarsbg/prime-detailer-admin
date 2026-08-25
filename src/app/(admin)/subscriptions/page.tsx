@@ -35,10 +35,10 @@ export default function SubscriptionsPage() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <Topbar title="Subscriptions" description="All organization subscriptions" />
       <FilterBar searchValue={search} onSearch={setSearch} searchPlaceholder="Search organizations…" onRefresh={() => load(true)} refreshing={refreshing} />
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "#f8fafc" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "12px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         {loading ? <AdminTableSkeleton rows={8} cols={9} /> : filtered.length === 0 ? (
-          <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "12px" }}><EmptyState icon={CreditCard} title="No subscriptions found" /></div>
+          <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px" }}><EmptyState icon={CreditCard} title="No subscriptions found" /></div>
         ) : (
           <>
             <AdminTable>

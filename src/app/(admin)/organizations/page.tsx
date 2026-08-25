@@ -52,27 +52,27 @@ export default function OrganizationsPage() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
       <Topbar title="Organizations" description={`${orgs.length} customer organizations`} />
       <FilterBar searchValue={search} onSearch={setSearch} searchPlaceholder="Search organizations…" onRefresh={() => load(true)} refreshing={refreshing}>
-        <FilterSelect value={filterPlan} onChange={(v) => setFilterPlan(v as PlanCode | "all")}>
-          <option value="all">All Plans</option>
-          <option value="STARTER">Starter</option>
-          <option value="GROWTH">Growth</option>
-          <option value="BUSINESS">Business</option>
-          <option value="ENTERPRISE">Enterprise</option>
-          <option value="CUSTOM">Custom</option>
-        </FilterSelect>
-        <FilterSelect value={filterStatus} onChange={(v) => setFilterStatus(v as FS)}>
-          <option value="all">All Statuses</option>
-          <option value="active">Active</option>
-          <option value="expired">Expired</option>
-          <option value="past_due">Past Due</option>
-          <option value="expiring">Expiring Soon</option>
-          <option value="cancelled">Cancelled</option>
-        </FilterSelect>
+        <FilterSelect value={filterPlan} onChange={(v) => setFilterPlan(v as PlanCode | "all")} options={[
+          { value: "all", label: "All Plans" },
+          { value: "STARTER", label: "Starter" },
+          { value: "GROWTH", label: "Growth" },
+          { value: "BUSINESS", label: "Business" },
+          { value: "ENTERPRISE", label: "Enterprise" },
+          { value: "CUSTOM", label: "Custom" },
+        ]} />
+        <FilterSelect value={filterStatus} onChange={(v) => setFilterStatus(v as FS)} options={[
+          { value: "all", label: "All Statuses" },
+          { value: "active", label: "Active" },
+          { value: "expired", label: "Expired" },
+          { value: "past_due", label: "Past Due" },
+          { value: "expiring", label: "Expiring Soon" },
+          { value: "cancelled", label: "Cancelled" },
+        ]} />
       </FilterBar>
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "#f8fafc" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "12px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         {loading ? <AdminTableSkeleton rows={8} cols={7} /> : filtered.length === 0 ? (
-          <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
+          <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px" }}>
             <EmptyState icon={Building2} title="No organizations found" description={search || filterPlan !== "all" || filterStatus !== "all" ? "Try adjusting your filters." : "No organizations yet."} />
           </div>
         ) : (
@@ -84,11 +84,11 @@ export default function OrganizationsPage() {
                   <Tr key={org.organization.id}>
                     <Td>
                       <Link href={`/organizations/${org.organization.id}`} style={{ color: "#2563eb", textDecoration: "none", fontWeight: 500 }}>{org.organization.name}</Link>
-                      <div style={{ fontSize: "11px", color: "#94a3b8", fontFamily: "monospace" }}>{org.organization.id}</div>
+                      <div style={{ fontSize: "11px", color: "var(--muted-foreground)", fontFamily: "monospace" }}>{org.organization.id}</div>
                     </Td>
                     <Td><PlanBadge planCode={org.subscription.planCode} /></Td>
                     <Td><SubscriptionStatusBadge status={org.subscription.status} /></Td>
-                    <Td muted nowrap><div>{formatDate(org.subscription.expiresAt)}</div><div style={{ fontSize: "11px", color: "#94a3b8" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div></Td>
+                    <Td muted nowrap><div>{formatDate(org.subscription.expiresAt)}</div><div style={{ fontSize: "11px", color: "var(--muted-foreground)" }}>{daysRemainingLabel(org.subscription.daysRemaining)}</div></Td>
                     <Td><PaymentStatusBadge status={org.subscription.paymentStatus} /></Td>
                     <Td muted>{org.usage.branchesUsed} / {org.subscription.effectiveMaxBranches ?? "∞"}</Td>
                     <Td muted>{org.usage.usersUsed} / {org.subscription.limits.maxStaff ?? "∞"}</Td>

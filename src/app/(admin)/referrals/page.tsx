@@ -56,45 +56,45 @@ export default function ReferralsPage() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
-      <Topbar title="Referral Codes" description="Subscription referral code management" actions={newCodeBtn} />
+      <Topbar title="Referral Codes" description="Subscription referral code management" />
       {showForm && (
-        <div style={{ padding: "12px 24px", borderBottom: "1px solid #f1f5f9", background: "#fff" }}>
+        <div style={{ padding: "12px 24px", borderBottom: "1px solid var(--border)", background: "var(--card)" }}>
           <form onSubmit={handleCreate} style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "flex-end" }}>
             <div>
-              <div style={{ fontSize: "11px", fontWeight: 500, color: "#64748b", marginBottom: "4px" }}>Code (uppercase, 4-24 chars)</div>
+              <div style={{ fontSize: "11px", fontWeight: 500, color: "var(--muted-foreground)", marginBottom: "4px" }}>Code (uppercase, 4-24 chars)</div>
               <input placeholder="PARTNER-2026" value={newCode} onChange={(e) => setNewCode(e.target.value.toUpperCase())} required
-                style={{ height: "36px", padding: "0 10px", border: "1px solid #e2e8f0", borderRadius: "6px", fontSize: "13px", width: "160px", outline: "none" }} />
+                style={{ height: "36px", padding: "0 10px", border: "1px solid var(--border)", borderRadius: "6px", fontSize: "13px", width: "160px", outline: "none" }} />
             </div>
             <div>
-              <div style={{ fontSize: "11px", fontWeight: 500, color: "#64748b", marginBottom: "4px" }}>Discount (₹)</div>
+              <div style={{ fontSize: "11px", fontWeight: 500, color: "var(--muted-foreground)", marginBottom: "4px" }}>Discount (₹)</div>
               <input type="number" min={0} value={newDiscount} onChange={(e) => setNewDiscount(Number(e.target.value))}
-                style={{ height: "36px", padding: "0 10px", border: "1px solid #e2e8f0", borderRadius: "6px", fontSize: "13px", width: "100px", outline: "none" }} />
+                style={{ height: "36px", padding: "0 10px", border: "1px solid var(--border)", borderRadius: "6px", fontSize: "13px", width: "100px", outline: "none" }} />
             </div>
             <div style={{ flex: 1, minWidth: "180px" }}>
-              <div style={{ fontSize: "11px", fontWeight: 500, color: "#64748b", marginBottom: "4px" }}>Notes (optional)</div>
+              <div style={{ fontSize: "11px", fontWeight: 500, color: "var(--muted-foreground)", marginBottom: "4px" }}>Notes (optional)</div>
               <input placeholder="Partner notes…" value={newNotes} onChange={(e) => setNewNotes(e.target.value)}
-                style={{ height: "36px", padding: "0 10px", border: "1px solid #e2e8f0", borderRadius: "6px", fontSize: "13px", width: "100%", outline: "none" }} />
+                style={{ height: "36px", padding: "0 10px", border: "1px solid var(--border)", borderRadius: "6px", fontSize: "13px", width: "100%", outline: "none" }} />
             </div>
             <div style={{ display: "flex", gap: "6px" }}>
               <button type="submit" disabled={creating} style={{ display: "flex", alignItems: "center", gap: "5px", height: "36px", padding: "0 16px", borderRadius: "6px", border: "none", background: creating ? "#93c5fd" : "#2563eb", color: "#fff", fontSize: "13px", fontWeight: 500, cursor: "pointer" }}>
                 {creating && <Loader2 style={{ width: "13px", height: "13px", animation: "spin 1s linear infinite" }} />}
                 {creating ? "Creating…" : "Create"}
               </button>
-              <button type="button" onClick={() => setShowForm(false)} style={{ height: "36px", padding: "0 14px", borderRadius: "6px", border: "1px solid #e2e8f0", background: "#fff", color: "#374151", fontSize: "13px", cursor: "pointer" }}>Cancel</button>
+              <button type="button" onClick={() => setShowForm(false)} style={{ height: "36px", padding: "0 14px", borderRadius: "6px", border: "1px solid var(--border)", background: "var(--card)", color: "var(--foreground)", fontSize: "13px", cursor: "pointer" }}>Cancel</button>
             </div>
           </form>
         </div>
       )}
-      <FilterBar onRefresh={() => load(true)} refreshing={loading}>
-        <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "#64748b", cursor: "pointer" }}>
+      <FilterBar onRefresh={() => load(true)} refreshing={loading} rightSlot={newCodeBtn}>
+        <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--muted-foreground)", cursor: "pointer" }}>
           <input type="checkbox" checked={showInactive} onChange={(e) => setShowInactive(e.target.checked)} />
           Show inactive
         </label>
       </FilterBar>
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "#f8fafc" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", background: "var(--page-bg)" }}>
         {error && <div style={{ marginBottom: "12px" }}><ErrorBanner message={error} onRetry={load} /></div>}
         {loading ? <AdminTableSkeleton rows={5} cols={5} /> : codes.length === 0 ? (
-          <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
+          <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px" }}>
             <EmptyState icon={Tag} title="No referral codes yet" description="Create your first referral code using the button above." />
           </div>
         ) : (
