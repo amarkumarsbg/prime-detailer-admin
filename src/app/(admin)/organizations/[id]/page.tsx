@@ -466,10 +466,10 @@ export default function OrgDetailPage() {
         description={`ID: ${org.organization.id}`}
         actions={
           <div style={{ display: "flex", gap: 6 }}>
-            <Button variant="outline" size="sm" onClick={() => router.back()}>
+            <Button variant="outline" size="sm" onClick={() => router.back()} style={{ minWidth: 80 }}>
               <ArrowLeft className="h-4 w-4" /> Back
             </Button>
-            <Button variant="outline" size="sm" onClick={() => load(true)} disabled={refreshing}>
+            <Button variant="outline" size="sm" onClick={() => load(true)} disabled={refreshing} style={{ minWidth: 90 }}>
               <RefreshCw className={`h-4 w-4${refreshing ? " animate-spin" : ""}`} />
               {refreshing ? "Refreshing…" : "Refresh"}
             </Button>
@@ -658,7 +658,7 @@ export default function OrgDetailPage() {
               </FormField>
             </div>
             <div style={{ padding: "12px 24px 20px", display: "flex", justifyContent: "flex-end", gap: 8, borderTop: "1px solid #f1f5f9" }}>
-              <Button variant="outline" onClick={() => setMarkPaidOpen(false)} disabled={markPaidLoading}>Cancel</Button>
+              <Button variant="outline" onClick={() => setMarkPaidOpen(false)} disabled={markPaidLoading} style={{ minWidth: 100 }}>Cancel</Button>
               <Button onClick={handleMarkPaid} disabled={markPaidLoading} className="min-w-35">
                 {markPaidLoading ? <><Loader2 className="h-4 w-4 animate-spin" /> Confirming…</> : "Confirm Mark Paid"}
               </Button>
